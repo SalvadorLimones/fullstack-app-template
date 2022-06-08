@@ -7,20 +7,20 @@ const http = httpModule();
 
 const config = {
   google: {
-    client_id: process.env.CLIENT_ID,
-    client_secret: process.env.CLIENT_SECRET,
-    redirect_uri: process.env.REDIRECT_URI,
-    token_endpoint: process.env.TOKEN_ENDPOINT,
-    user_endpoint: null,
-    user_id: null,
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    client_secret: process.env.GOOGLE_CLIENT_SECRET,
+    redirect_uri: process.env.GOOGLE_REDIRECT_URI,
+    token_endpoint: process.env.GOOGLE_TOKEN_ENDPOINT,
+    user_endpoint: process.env.GOOGLE_USER_ENDPOINT,
+    user_id: process.env.GOOGLE_USER_ID,
   },
   github: {
     client_id: process.env.GIT_CLIENT_ID,
     client_secret: process.env.GIT_CLIENT_SECRET,
     redirect_uri: process.env.GIT_REDIRECT_URI,
     token_endpoint: process.env.GIT_TOKEN_ENDPOINT,
-    user_endpoint: "http://api.github.com/user",
-    user_id: "id",
+    user_endpoint: process.env.GIT_USER_ENDPOINT,
+    user_id: process.env.GIT_USER_ID,
   },
   /*   facebook: {
     clientId: "",
@@ -55,6 +55,7 @@ router.post("/login", async (req, res) => {
       },
     }
   );
+  console.log("RESP: ", response);
 
   if (!response) return res.sendStatus(500);
   if (response.status !== 200) return res.sendStatus(401);
@@ -73,8 +74,10 @@ router.post("/login", async (req, res) => {
         },
       }
     );
+
     if (!response) return res.sendStatus(500);
     if (response.status !== 200) return res.sendStatus(401);
+
     const id = config[provider].user_id;
     openId = userResponse.data[id];
   } else {
