@@ -1,7 +1,9 @@
+require("dotenv").config();
 const app = require("../app");
 const mockserver = require("supertest");
 const User = require("../models/user");
 const { startDb, stopDb, deleteAll } = require("./util/inMemoryDb");
+const jwt = require("jsonwebtoken");
 
 describe("/api/dashboards GET tests", () => {
   let connection;
@@ -26,10 +28,17 @@ describe("/api/dashboards GET tests", () => {
     const newUser = new User({
       username: "Macska",
       email: "ggg@ggg.gg",
-      googleId: "12345",
+      providers: {
+        google: 123456,
+      },
     });
     await newUser.save();
-    client.set("authorization", newUser._id);
+    const sessionToken = jwt.sign(
+      { userId: newUser._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    client.set("authorization", sessionToken);
 
     //when
     const response = await client.get("/api/dashboards");
@@ -46,11 +55,18 @@ describe("/api/dashboards GET tests", () => {
     const newUser = new User({
       username: "Macska",
       email: "ggg@ggg.gg",
-      googleId: "12345",
+      providers: {
+        google: 123456,
+      },
     });
     await newUser.save();
+    const sessionToken = jwt.sign(
+      { userId: newUser._id, providers: newUser.providers },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
 
-    client.set("authorization", newUser._id);
+    client.set("authorization", sessionToken);
     await User.deleteMany();
 
     //when
