@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "nodemon server.js",
-    "test": "jest",
+    "test": "jest --verbose --coverage",
     "test:watch": "jest --watch"
   }
 }
