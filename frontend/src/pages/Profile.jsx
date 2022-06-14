@@ -3,8 +3,9 @@ import { useCounter } from "../hooks/useCounter";
 import { useCounter as useGlobalCounter } from "../providers/counter";
 
 const Profile = () => {
-  const { counter, increment, decrement } = useCounter();
+  const { counter, increment, decrement } = useCounter("profile");
   const { value, increment: goUp, decrement: goDown } = useGlobalCounter();
+
   return (
     <>
       <div>Profile</div>
