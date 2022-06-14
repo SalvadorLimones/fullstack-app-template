@@ -1,19 +1,20 @@
 import "./App.css";
 import React from "react";
-import NumberPresenter from "./components/NumberPresenter";
-import NumberModifier from "./components/NumberModifier";
-import { useCounter } from "./CounterProvider";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Profile from "./pages/Profile";
+import Navbar from "./components/Navbar";
 
 function App() {
-  const { value, increment, decrement } = useCounter();
   return (
     <div className="App">
-      <p>change the value</p>
-      <p>Value: {value}</p>
-      <button onClick={decrement}>-</button>
-      <button onClick={increment}>+</button>
-      <NumberPresenter />
-      <NumberModifier />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/about" element={<About />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
+      </Routes>
     </div>
   );
 }
