@@ -5,6 +5,7 @@ export const useCounter = (componentName) => {
 
   useEffect(() => {
     localStorage.setItem("counter" + componentName, counter);
+    // eslint-disable-next-line
   }, [counter]);
 
   useEffect(() => {
@@ -12,6 +13,7 @@ export const useCounter = (componentName) => {
       localStorage.getItem("counter" + componentName, counter)
     );
     setCounter(localCounter);
+    // eslint-disable-next-line
   }, []);
 
   const increment = () => setCounter(counter + 1);

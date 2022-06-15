@@ -18,8 +18,8 @@ const AuthProvider = ({ children }) => {
     searchParams.append("prompt", "select_account");
 
     const fullUrl = googleBaseUrl + "?" + searchParams.toString();
-    window.close("http://localhost:3000");
-    window.open(fullUrl);
+
+    window.open(fullUrl, "_self");
   };
 
   const login = async (code, provider) => {
