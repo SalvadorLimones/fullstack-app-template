@@ -1,4 +1,5 @@
 import { React, useState, useContext, createContext } from "react";
+import http from "axios";
 
 const AuthContext = createContext();
 
@@ -17,10 +18,23 @@ const AuthProvider = ({ children }) => {
     searchParams.append("prompt", "select_account");
 
     const fullUrl = googleBaseUrl + "?" + searchParams.toString();
+    window.close("http://localhost:3000");
     window.open(fullUrl);
   };
+
+  const login = async (code, provider) => {
+    try {
+      const resp = await http.post("http://localhost:4000/api/user/login", {
+        code: code,
+        provider: provider,
+      });
+      setToken(resp.data.sessionToken);
+    } catch (err) {
+      setToken(null);
+    }
+  };
   const logout = () => setToken(null);
-  const contextValue = { token, auth, logout };
+  const contextValue = { token, auth, login, logout };
 
   return (
     <div>
@@ -31,6 +45,10 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-const useAuth = () => useContext(AuthContext);
+const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("add authprovider route");
+  return context;
+};
 
 export { AuthProvider, useAuth };

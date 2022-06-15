@@ -6,10 +6,11 @@ import { useAuth } from "../providers/auth";
 const Home = () => {
   const { counter, increment, decrement } = useCounter();
   const { value, increment: goUp, decrement: goDown } = useGlobalCounter();
-  const { auth } = useAuth();
+  const { auth, token } = useAuth();
   return (
     <>
       <div>Home</div>
+      <p>{token ? "Logged in" : "Anonymus user"}</p>
       <h3>Local counter:</h3>
       <p>{counter}</p>
       <button onClick={decrement}>-</button>
