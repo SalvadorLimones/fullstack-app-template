@@ -4,9 +4,9 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
-  const increment = () => setValue(value + 1);
-  const decrement = () => setValue(value - 1);
-  const contextValue = { token, increment, decrement };
+  const auth = () => {};
+  const logout = () => setToken(null);
+  const contextValue = { token, auth, logout };
 
   return (
     <div>
