@@ -1,21 +1,12 @@
 import { React, useState, useContext, createContext } from "react";
 
 const CounterContext = createContext();
-const useCounter = () => useContext(CounterContext);
 
 const CounterProvider = ({ children }) => {
   const [value, setValue] = useState(0);
-  const [valueHome, setValueHome] = useState(0);
-  const [valueProfile, setValueProfile] = useState(0);
-
-  const contextValue = {
-    value,
-    setValue,
-    valueHome,
-    setValueHome,
-    valueProfile,
-    setValueProfile,
-  };
+  const increment = () => setValue(value + 1);
+  const decrement = () => setValue(value - 1);
+  const contextValue = { value, increment, decrement };
 
   return (
     <div>
@@ -25,5 +16,7 @@ const CounterProvider = ({ children }) => {
     </div>
   );
 };
+
+const useCounter = () => useContext(CounterContext);
 
 export { CounterProvider, useCounter };
