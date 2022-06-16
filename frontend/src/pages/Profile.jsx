@@ -12,6 +12,7 @@ const Profile = () => {
     decrement: goDown,
   } = useGlobalCounter();
   const { token } = useAuth();
+
   return (
     <>
       <div>Profile</div>

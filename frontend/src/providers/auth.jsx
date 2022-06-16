@@ -1,4 +1,4 @@
-import { React, useState, useContext, createContext } from "react";
+import { React, useState, useContext, createContext, useEffect } from "react";
 import http from "axios";
 
 const AuthContext = createContext();
@@ -29,12 +29,24 @@ const AuthProvider = ({ children }) => {
         provider: provider,
       });
       setToken(resp.data.sessionToken);
+      localStorage.setItem("token", resp.data.sessionToken);
     } catch (err) {
       setToken(null);
+      localStorage.removeItem("token");
     }
   };
-  const logout = () => setToken(null);
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  };
+
   const contextValue = { token, auth, login, logout };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) setToken(token);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div>
