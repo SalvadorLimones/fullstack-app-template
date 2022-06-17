@@ -24,6 +24,7 @@ const Home = () => {
       <p>{value}</p>
       <button onClick={() => goDown()}>-</button>
       <button onClick={() => goUp()}>+</button>
+      {!token ? <button onClick={auth}>Login</button> : "Welcome!"}
     </>
   );
 };

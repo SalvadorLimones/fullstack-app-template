@@ -15,13 +15,14 @@ const Navbar = () => {
         backgroundColor: "grey",
         display: "flex",
         justifyContent: "space-between",
+        padding: " 10px 30px",
       }}
     >
       <div>
         <button onClick={() => nav("/")}>Home</button>
         <button onClick={() => nav("/about")}>About</button>
-        {/* <button onClick={() => navigate("/profile")}>Profile</button> */}
-        <Link to="/profile">Profile</Link>
+        <button onClick={() => navigate("/profile")}>Profile</button>
+        {/* <Link to="/profile">Profile</Link> */}
       </div>
       <div>
         {!token ? (

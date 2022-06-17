@@ -1,10 +1,15 @@
 import { React, useState, useContext, createContext, useEffect } from "react";
 import http from "axios";
+import jwt from "jwt-decode";
+import { todoApi } from "../api/todoApi";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
+  const { post } = todoApi();
+
   const auth = () => {
     const googleBaseUrl = "https://accounts.google.com/o/oauth2/v2/auth";
     const searchParams = new URLSearchParams();
@@ -19,7 +24,8 @@ const AuthProvider = ({ children }) => {
 
     const fullUrl = googleBaseUrl + "?" + searchParams.toString();
 
-    window.open(fullUrl, "_self");
+    //window.open(fullUrl, "_self");
+    window.location.href = fullUrl;
   };
 
   const login = async (code, provider) => {
@@ -30,6 +36,7 @@ const AuthProvider = ({ children }) => {
       });
       setToken(resp.data.sessionToken);
       localStorage.setItem("token", resp.data.sessionToken);
+      setUser(jwt(resp.data.sessionToken));
     } catch (err) {
       setToken(null);
       localStorage.removeItem("token");
@@ -40,11 +47,24 @@ const AuthProvider = ({ children }) => {
     setToken(null);
   };
 
-  const contextValue = { token, auth, login, logout };
+  const register = async (username) => {
+    const resp = await post("/user/create", { username });
+
+    if (resp?.status === 200) {
+      setToken(resp.data.sessionToken);
+      localStorage.setItem("token", resp.data.sessionToken);
+      setUser(jwt(resp.data.sessionToken));
+    }
+  };
+
+  const contextValue = { user, token, auth, login, logout, register };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) setToken(token);
+    const tokenInStorage = localStorage.getItem("token");
+    if (tokenInStorage) {
+      setToken(tokenInStorage);
+      setUser(jwt(tokenInStorage));
+    }
     // eslint-disable-next-line
   }, []);
 
