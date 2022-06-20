@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const todoApi = () => {
   const instance = axios.create({
-    baseURL: "http://localhost:4000/api",
+    baseURL: process.env.REACT_APP_TODOAPI,
     timeout: 3000,
   });
 
@@ -11,7 +11,6 @@ export const todoApi = () => {
       const resp = await instance.post(path, data, {
         headers: { authorization: localStorage.getItem("token") },
       });
-      console.log("RESP?", resp);
       return resp;
     } catch (err) {
       return err.response;

@@ -2,6 +2,7 @@ import { React, useState, useContext, createContext, useEffect } from "react";
 import http from "axios";
 import jwt from "jwt-decode";
 import { todoApi } from "../api/todoApi";
+import config from "../app.config";
 
 const AuthContext = createContext();
 
@@ -11,14 +12,11 @@ const AuthProvider = ({ children }) => {
   const { post } = todoApi();
 
   const auth = () => {
-    const googleBaseUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+    const googleBaseUrl = config.google_base_url;
     const searchParams = new URLSearchParams();
-    searchParams.append(
-      "client_id",
-      "423125049963-vnhlm59vvirdjsquu0efhqvq5u91orks.apps.googleusercontent.com"
-    );
+    searchParams.append("client_id", config.google_client_id);
     searchParams.append("scope", "openid");
-    searchParams.append("redirect_uri", "http://localhost:3000/callback");
+    searchParams.append("redirect_uri", window.location.origin + "/callback");
     searchParams.append("response_type", "code");
     searchParams.append("prompt", "select_account");
 
